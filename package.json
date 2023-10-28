@@ -16,5 +16,8 @@
     "@rollup/plugin-run": "^3.0.2",
     "rollup": "^4.1.4",
     "vite": "^4.5.0"
+  },
+  "stackblitz": {
+    "startCommand": "node dev.js"
   }
 }
