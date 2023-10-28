@@ -1,15 +1,12 @@
-import { dispatch, use } from 'virtual:remux'
+import { dispatch, use } from '@remux/lib'
 // @remux server
 import { createServer } from 'http'
 
-const API_PATH = '/__remux'
-const API_PORT = 9982
-const CLIENT_MAX_BODY = 1048576
-
-export function clientSetup() {
+export function clientSetup(options={}) {
+  const url = options.url || '/__remux'
   use(async (role, module, func, params) => {
     console.debug(role, module, func, params)
-    const text = await (await fetch(API_PATH, {
+    const text = await (await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -24,7 +21,9 @@ export function clientSetup() {
   })
 }
 
-export function serverSetup() {
+export function serverSetup(options={}) {
+  const clientMaxBody = options.clientMaxBody || 1048576
+  const port = options.port || 9982
   createServer((req, res) => {
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
     console.debug(`${ip}\t${req.method}\t${req.url}`)
@@ -49,7 +48,7 @@ export function serverSetup() {
     }
     let body = ''
     req.on('data', chunk => {
-      if (body.length + chunk.length > CLIENT_MAX_BODY) {
+      if (body.length + chunk.length > clientMaxBody) {
         res.statusCode = 413
         res.end()
         return
@@ -68,5 +67,5 @@ export function serverSetup() {
         res.end(e.toString())
       }
     })
-  }).listen(API_PORT)
+  }).listen(port)
 }

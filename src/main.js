@@ -18,6 +18,6 @@ function serverFunction() {
   // put browser code here
   const btn = document.createElement('button')
   btn.innerText = 'Hit me'
-  btn.addEventListener('click', serverFunction)
+  btn.addEventListener('click', () => serverFunction())
   document.body.appendChild(btn)
 }
