@@ -7,12 +7,13 @@
 import { dispatch, use } from '@remux/lib'
 // @remux server
 import { createServer } from 'http'
+import config from '../config.js'
 
-export function clientSetup(options={}) {
-  const url = options.url || '/__remux'
+// @remux browser
+{
   use(async (role, module, func, params) => {
     console.debug(role, module, func, params)
-    const text = await (await fetch(url, {
+    const text = await (await fetch(config.path, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -27,9 +28,9 @@ export function clientSetup(options={}) {
   })
 }
 
-export function serverSetup(options={}) {
-  const clientMaxBody = options.clientMaxBody || 1048576
-  const port = options.port || 9982
+// @remux server
+{
+  const clientMaxBody = 1048576
   createServer((req, res) => {
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
     console.debug(`${ip}\t${req.method}\t${req.url}`)
@@ -73,5 +74,5 @@ export function serverSetup(options={}) {
         res.end(e.toString())
       }
     })
-  }).listen(port)
+  }).listen(config.port)
 }

@@ -1,5 +1,4 @@
 export default {
-  backend: {
-    port: 9982
-  }
+  port: 9982,
+  path: '/__remux'
 }

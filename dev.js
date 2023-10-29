@@ -5,13 +5,14 @@ import { watch } from 'rollup'
 import run from '@rollup/plugin-run'
 import { access, mkdir } from 'fs/promises'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
+import config from './config.js'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const tmpDir = __dirname + '/.tmp/'
 await access(tmpDir).catch(() => {
   return mkdir(tmpDir)
 })
-
+// FIXME: output dir
 const watcher = watch({
   input: __dirname + '/src/main.js',
   output: [{
@@ -27,6 +28,9 @@ watcher.on('event', event => {
   }
 })
 
+const proxy = {}
+proxy[config.path] = `http://localhost:${config.port}`
+
 const frontend = await createViteServer({
   root: __dirname + '/src',
   optimizeDeps: {
@@ -36,9 +40,7 @@ const frontend = await createViteServer({
     remux('browser')
   ],
   server: {
-    proxy: {
-      '/__remux': 'http://localhost:9982'
-    }
+    proxy
   }
 })
 
