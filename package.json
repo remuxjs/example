@@ -10,8 +10,8 @@
   "author": "hzy",
   "license": "AGPL-3.0-or-later",
   "devDependencies": {
-    "@remux/lib": "^0.2.0",
-    "@remux/rollup-plugin": "^0.2.0",
+    "@remux/lib": "^0.2.1",
+    "@remux/rollup-plugin": "^0.2.1",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-run": "^3.0.2",
     "rollup": "^4.1.4",
