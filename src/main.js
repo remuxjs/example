@@ -1,3 +1,9 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+/*
+ * main.js - remux example
+ *
+ * Copyright 2023 huangziyi. All rights reserved.
+ */
 import { clientSetup, serverSetup } from './serve.js'
 
 // @remux server
